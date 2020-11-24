@@ -1,24 +1,25 @@
 package todo;
 
 import com.codeborne.selenide.Condition;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.assertEquals;
 
-public class ClearCompleteTodoTest {
+public class ClearCompleteTodoTest extends BaseTest {
+
     @Test
     public void createTodo() {
-        open("http://todomvc.com/examples/react/#/");
+        Todo.create("Read Book");
 
-        $(".new-todo").val("Read book").pressEnter();
+        Todo.markCompleted("Read Book");
 
-        $(".toggle").click();
+        Todo.clearCompleted();
 
-        $(".clear-completed").click();
-
-        $(".main").shouldNot(Condition.exist);
-        $(".footer").shouldNot(Condition.exist);
+        Todo.count().shouldNot(Condition.exist);
+        Todo.main().shouldNot(Condition.exist);
+        Todo.footer().shouldNot(Condition.exist);
     }
 }

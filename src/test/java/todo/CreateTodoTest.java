@@ -1,19 +1,17 @@
 package todo;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
 import org.testng.annotations.Test;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-import static org.junit.Assert.assertEquals;
+public class CreateTodoTest extends BaseTest {
 
-public class CreateTodoTest {
     @Test
     public void createTodo() {
-        open("http://todomvc.com/examples/react/#/");
+        Todo.create("Read Book");
 
-        $(".new-todo").val("Read book").pressEnter();
-
-        assertEquals("Read book", $(".todo-list label").text());
-        assertEquals("1 item left", $(".todo-count").text());
+        Todo.list().shouldHave(CollectionCondition.size(1));
+        Todo.list().first().shouldHave(Condition.text("Read Book"));
+        Todo.count().shouldHave(Condition.text("1 item left"));
     }
 }
